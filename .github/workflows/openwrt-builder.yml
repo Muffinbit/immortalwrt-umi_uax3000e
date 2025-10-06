@@ -359,32 +359,55 @@ jobs:
           TARGET_BOARD=$(grep 'CONFIG_TARGET_BOARD=' .config | awk -F'"' '{print $2}')
           TARGET_SUBTARGET=$(grep 'CONFIG_TARGET_SUBTARGET=' .config | awk -F'"' '{print $2}')
           DEVICE_INFO="${TARGET_BOARD}/${TARGET_SUBTARGET}"
-          
-          PLUGINS=$(grep '^CONFIG_PACKAGE_luci-[a-z-]*=y$' .config | sed 's/^CONFIG_PACKAGE_//;s/=y$//' | sort)
-          FORMATTED_PLUGINS=$(echo "$PLUGINS" | awk '{printf "• %s\n", $0}')
-          
+          PLUGINS=$(grep '^CONFIG_PACKAGE_luci-app-[a-z-]*=y$' .config | sed 's/^CONFIG_PACKAGE_//;s/=y$//' | sort)
           RELEASE_TAG="$(date +"%Y.%m.%d-%H%M")-${DEVICE_INFO}-${DEVICE_MODEL}-${TARGET_ARCH}"
           echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
-          
-          printf '%s\n' \
-          "🚀 $DEVICE_MODEL Firmware" \
-          "🌐 Admin URL: $LAN_IP" \
-          "🔑 Login: root" \
-          "🔒 Password: none" \
-          "📋 Device Info: $DEVICE_INFO" \
-          "🖥️ Device Model: $DEVICE_MODEL" \
-          "🏗️ Device Arch: $TARGET_ARCH" \
-          "💿 System Version: $SYSTEM_VERSION" \
-          "⚙️ Kernel Version: $KERNEL_VERSION" \
-          "🎨 Default Theme: $DEFAULT_THEME" \
-          "🏷️ Hostname: $HOSTNAME" \
-          "📶 2.4G WiFi SSID: $WIFINAME_2G" \
-          "📶 5G WiFi SSID: $WIFINAME_5G" \
-          "🔌 Included Plugins:" \
-          "$FORMATTED_PLUGINS" \
-          "📎 Source Code: $REPO_URL" \
-          > ../release.txt
 
+          cat > release.txt <<EOF
+          ### 🚀${DEVICE_MODEL}-immortalwrt Firmware
+
+          - 🌐Admin URL: ${LAN_IP}
+          - 🔑Login: root
+          - 🔒Password: none
+          - 📋Device Info: ${DEVICE_INFO}
+          - 🖥️Device Model: ${DEVICE_MODEL}
+          - 🏗️Device Arch: ${TARGET_ARCH}
+          - 💿System Version: ${SYSTEM_VERSION}
+          - ⚙️Kernel Version: ${KERNEL_VERSION}
+          - 🎨Default Theme: ${DEFAULT_THEME}
+          - 🏷️Hostname: ${HOSTNAME}
+          - 📶2.4G WiFi SSID: ${WIFINAME_2G}
+          - 📶5G WiFi SSID: ${WIFINAME_5G}
+
+          #### 📦Plugins
+          \`\`\`
+          EOF
+
+          count=0
+          if [ -n "$PLUGINS" ]; then
+              while IFS= read -r plugin; do
+                  count=$((count + 1))
+                  echo "${count}. ${plugin}" >> release.txt
+              done <<< "$PLUGINS"
+          else
+              echo "none" >> release.txt
+          fi
+
+          cat >> release.txt <<EOF
+          \`\`\`
+
+          #### 🔧Build Information
+          - Build Time: $(date +"%Y-%m-%d %H:%M:%S %Z")
+          - Source URL: ${REPO_URL}
+          - Source Branch: ${REPO_BRANCH}
+          EOF
+
+          echo "======= release.txt content ======="
+          cat release.txt
+          echo "=================================="
+
+          mv release.txt ../release_content.txt
+          
           echo "📝 Release information generated"
           echo "status=success" >> $GITHUB_OUTPUT
 
@@ -395,9 +418,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.release_info.outputs.release_tag }}
-          body_path: release.txt
+          body_path: release_content.txt
           files: ${{ env.FIRMWARE }}/*
-
       # ====================== Cleanup Phase ======================
       - name: Cleanup Old Workflow Runs
         uses: Mattraks/delete-workflow-runs@v2
