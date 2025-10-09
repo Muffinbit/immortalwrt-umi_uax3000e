@@ -58,8 +58,8 @@ on:
 
 env:
   REPO_URL: https://github.com/${{ github.event.inputs.build_version }}
-  REPO_BRANCH: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && 'openwrt-24.10-6.6' || github.event.inputs.build_version == 'padavanonly/openwrt' && 'main' || 'master' }}
-  SYSTEM_VERSION: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && 'immortalwrt 24.10' || github.event.inputs.build_version == 'padavanonly/openwrt' && 'openwrt 24.10.3' || 'immortalwrt 24.10' }}
+  REPO_BRANCH: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && 'openwrt-24.10-6.6' || github.event.inputs.build_version == 'Muffinbit/openwrt' && 'main' || 'master' }}
+  SYSTEM_VERSION: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && 'immortalwrt 24.10' || github.event.inputs.build_version == 'Muffinbit/openwrt' && 'openwrt 24.10.3' || 'immortalwrt 24.10' }}
   KERNEL_VERSION: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && '6.6' || '6.12' }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
