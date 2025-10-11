@@ -30,6 +30,12 @@ on:
         description: 'Set LAN IP Address'
         required: false
         default: '192.168.1.1'
+      ssh:
+        description: 'Connect to Actions via SSH'
+        required: false
+        default: false
+        type: boolean
+
 #      default_theme:
 #        description: 'Select Default Theme'
 #        required: false
@@ -38,11 +44,6 @@ on:
 #        options:
 #          - argon
 #          - bootstrap
-      ssh:
-        description: 'Connect to Actions via SSH'
-        required: false
-        default: false
-        type: boolean
 
 env:
   REPO_URL: https://github.com/${{ github.event.inputs.build_version }}
@@ -362,7 +363,6 @@ jobs:
           - 🏗️Device Arch: ${TARGET_ARCH}
           - 💿System Version: ${SYSTEM_VERSION}
           - ⚙️Kernel Version: ${KERNEL_VERSION}
-#          - 🎨Default Theme: ${DEFAULT_THEME}
 
           #### 📦Plugins
           \`\`\`
