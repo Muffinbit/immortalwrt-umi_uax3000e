@@ -11,6 +11,7 @@
 #
 
 # Modify default IP
+#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 echo "ℹ️ Default LAN IP: $DEFAULT_LAN"
 echo "ℹ️ Input LAN IP: $LAN_IP"
 CONFIG_LAN_FILE="package/base-files/files/bin/config_generate"
@@ -24,6 +25,7 @@ else
 fi
 
 # Modify default theme
+#sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
 echo "ℹ️ Input theme: $DEFAULT_THEME"
 CONFIG_THEME_FILE="feeds/luci/collections/luci/Makefile"
 sed -i "s|luci-theme-bootstrap|$DEFAULT_THEME|g" "$CONFIG_THEME_FILE"
@@ -34,6 +36,9 @@ else
     echo "❌ Replacement failed! $DEFAULT_THEME not found in $CONFIG_THEME_FILE"
     exit 1
 fi
+
+# Modify hostname
+#sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
 
 # update_name(){  
 #     local old_name=$1  
