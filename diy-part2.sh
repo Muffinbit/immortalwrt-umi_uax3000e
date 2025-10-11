@@ -13,6 +13,7 @@
 # Modify default IP
 echo "ℹ️ Default LAN IP: $DEFAULT_LAN"
 echo "ℹ️ Input LAN IP: $LAN_IP"
+CONFIG_LAN_FILE="package/base-files/files/bin/config_generate"
 sed -i "s|$DEFAULT_LAN|$LAN_IP|g" "$CONFIG_LAN_FILE"
 
 if grep -q "$LAN_IP" "$CONFIG_LAN_FILE"; then
@@ -24,6 +25,7 @@ fi
 
 # Modify default theme
 echo "ℹ️ Input theme: $DEFAULT_THEME"
+CONFIG_THEME_FILE="feeds/luci/collections/luci/Makefile"
 sed -i "s|luci-theme-bootstrap|$DEFAULT_THEME|g" "$CONFIG_THEME_FILE"
 
 if grep -q "$DEFAULT_THEME" "$CONFIG_THEME_FILE"; then
