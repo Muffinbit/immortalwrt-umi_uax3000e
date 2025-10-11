@@ -62,11 +62,13 @@ env:
   SYSTEM_VERSION: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && 'immortalwrt 24.10' || github.event.inputs.build_version == 'Muffinbit/openwrt' && 'openwrt 24.10.3' || 'immortalwrt 24.10' }}
   KERNEL_VERSION: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && '6.6' || '6.12' }}
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: .config
+  CONFIG_FILE: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && 'immortalwrt-mt798x-6.6.config' || github.event.inputs.build_version == 'Muffinbit/openwrt' && 'openwrt.config' || 'immortalwrt.config' }}
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
+  DEFAULT_LAN: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && '192.168.6.1' || '192.168.1.1' }}
   LAN_IP: ${{ github.event.inputs.lan_ip }}
   DEFAULT_THEME: ${{ github.event.inputs.default_theme }}
+  DEFAULT_HOSTNAME: ${{ github.event.inputs.build_version == 'Muffinbit/openwrt' && 'OpenWrt' || 'ImmortalWrt' }}
   HOSTNAME: ${{ github.event.inputs.hostname }}
   WIFINAME_2G: ${{ github.event.inputs.wifiname_2g }}
   WIFINAME_5G: ${{ github.event.inputs.wifiname_5g }}
@@ -426,13 +428,13 @@ jobs:
         uses: Mattraks/delete-workflow-runs@v2
         with:
           retain_days: 3
-          keep_minimum_runs: 5
+          keep_minimum_runs: 3
 
       - name: Cleanup Old Releases
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
-          keep_latest: 5
+          keep_latest: 3
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
