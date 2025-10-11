@@ -11,15 +11,40 @@
 #
 
 # Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+echo "ℹ️ Default LAN IP: $DEFAULT_LAN"
+echo "ℹ️ Input LAN IP: $LAN_IP"
+sed -i "s|$DEFAULT_LAN|$LAN_IP|g" "$CONFIG_LAN_FILE"
+
+if grep -q "$LAN_IP" "$CONFIG_LAN_FILE"; then
+    echo "✅ Replacement successful"
+else
+    echo "❌ Replacement failed! $LAN_IP not found in $CONFIG_LAN_FILE"
+    exit 1
+fi
 
 # Modify default theme
-#sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+echo "ℹ️ Input theme: $DEFAULT_THEME"
+sed -i "s|luci-theme-bootstrap|$DEFAULT_THEME|g" "$CONFIG_THEME_FILE"
+
+if grep -q "$DEFAULT_THEME" "$CONFIG_THEME_FILE"; then
+    echo "✅ Replacement successful"
+else
+    echo "❌ Replacement failed! $DEFAULT_THEME not found in $CONFIG_THEME_FILE"
+    exit 1
+fi
 
 # Modify hostname
 #sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
+echo "ℹ️ Default host name: $DEFAULT_HOSTNAME"
+echo "ℹ️ Input host name: $HOSTNAME"
+sed -i "s|$DEFAULT_HOSTNAME|$HOSTNAME|g" "$CONFIG_THEME_FILE"
 
-
+if grep -q "$HOSTNAME" "$DEFAULT_HOSTNAME"; then
+    echo "✅ Replacement successful"
+else
+    echo "❌ Replacement failed! $HOSTNAME not found in $DEFAULT_HOSTNAME"
+    exit 1
+fi
 
 # update_name(){  
 #     local old_name=$1  
@@ -41,11 +66,4 @@
 # #update_name "管理权" "账号管理"
 # update_name "带宽监控" "监控"
 
-if [ -f ".config" ]; then
-    echo "✅ .config文件配置行数: $(wc -l .config | awk '{print $1}')"
-else
-    echo "ℹ️ 未找到.config文件" >&2
-    exit 1
-fi
-
-echo "✅ diy-part2.sh 执行完成"
+echo "✅ diy-part2.sh execution completed"
