@@ -38,18 +38,6 @@ on:
         options:
           - argon
           - bootstrap
-      hostname:
-        description: 'Set Hostname'
-        required: false
-        default: 'ImmortalWrt'
-      wifiname_2g:
-        description: 'Set 2.4G WiFi Name'
-        required: false
-        default: 'ImmortalWrt_2.4G'
-      wifiname_5g:
-        description: 'Set 5G WiFi Name'
-        required: false
-        default: 'ImmortalWrt_5G'
       ssh:
         description: 'Connect to Actions via SSH'
         required: false
@@ -69,9 +57,6 @@ env:
   LAN_IP: ${{ github.event.inputs.lan_ip }}
   DEFAULT_THEME: ${{ github.event.inputs.default_theme }}
   DEFAULT_HOSTNAME: ${{ github.event.inputs.build_version == 'Muffinbit/openwrt' && 'OpenWrt' || 'ImmortalWrt' }}
-  HOSTNAME: ${{ github.event.inputs.hostname }}
-  WIFINAME_2G: ${{ github.event.inputs.wifiname_2g }}
-  WIFINAME_5G: ${{ github.event.inputs.wifiname_5g }}
   SSH: ${{ format('{0}', github.event.inputs.ssh) }}
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
@@ -367,7 +352,7 @@ jobs:
           echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
 
           cat > release.txt <<EOF
-          ### 🚀${DEVICE_MODEL}-immortalwrt Firmware
+          ### 🚀${DEVICE_MODEL}-${DEFAULT_HOSTNAME} Firmware
 
           - 🌐Admin URL: ${LAN_IP}
           - 🔑Login: root
@@ -378,9 +363,6 @@ jobs:
           - 💿System Version: ${SYSTEM_VERSION}
           - ⚙️Kernel Version: ${KERNEL_VERSION}
           - 🎨Default Theme: ${DEFAULT_THEME}
-          - 🏷️Hostname: ${HOSTNAME}
-          - 📶2.4G WiFi SSID: ${WIFINAME_2G}
-          - 📶5G WiFi SSID: ${WIFINAME_5G}
 
           #### 📦Plugins
           \`\`\`
