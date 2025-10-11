@@ -15,17 +15,17 @@
 
 # Add a feed source
 echo 'src-git istore https://github.com/linkease/istore.git' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
+echo "✅ custom feed added"
 
 clone_package() {
     local repo=$1
     local dir=$2
     
     if [ -d "$dir" ]; then
-        echo "⚠️ 包 $dir 已存在，删除旧版本并重新克隆..."
+        echo "⚠️ Package $dir already exists, removing old version and re-cloning..."
         rm -rf "$dir" || {
-            echo "❌ 删除旧版本 $dir 失败！"
+            echo "❌ Failed to remove old version $dir!"
             exit 1
         }
     fi
@@ -33,14 +33,14 @@ clone_package() {
 GIT_CLONE_OUTPUT=$(git clone --depth 1 "$repo" "$dir" 2>&1)
 CLONE_EXIT_CODE=$?
 if [ $CLONE_EXIT_CODE -eq 0 ]; then
-    echo -e "✅ 克隆包：$repo 到 $dir 成功！"
+    echo -e "✅ Successfully cloned package: $repo to $dir!"
 else
-    echo -e "❌ 克隆包：$repo 到 $dir 失败！"
-    echo -e "❌ 错误信息：$GIT_CLONE_OUTPUT"
+    echo -e "❌ Failed to clone package: $repo to $dir!"
+    echo -e "❌ Error message: $GIT_CLONE_OUTPUT"
     exit 1
 fi
 }
 
 #clone_package "https://github.com/gdy666/luci-app-lucky.git" "package/luci-app-lucky"
 
-echo "✅ diy-part1.sh 执行完成"
+echo "✅ diy-part1.sh execution completed"
