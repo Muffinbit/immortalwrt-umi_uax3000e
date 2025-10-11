@@ -30,14 +30,14 @@ on:
         description: 'Set LAN IP Address'
         required: false
         default: '192.168.1.1'
-      default_theme:
-        description: 'Select Default Theme'
-        required: false
-        default: 'bootstrap'
-        type: choice
-        options:
-          - argon
-          - bootstrap
+#      default_theme:
+#        description: 'Select Default Theme'
+#        required: false
+#        default: 'bootstrap'
+#        type: choice
+#        options:
+#          - argon
+#          - bootstrap
       ssh:
         description: 'Connect to Actions via SSH'
         required: false
@@ -55,7 +55,7 @@ env:
   DIY_P2_SH: diy-part2.sh
   DEFAULT_LAN: ${{ github.event.inputs.build_version == 'padavanonly/immortalwrt-mt798x-6.6' && '192.168.6.1' || '192.168.1.1' }}
   LAN_IP: ${{ github.event.inputs.lan_ip }}
-  DEFAULT_THEME: ${{ github.event.inputs.default_theme }}
+#  DEFAULT_THEME: ${{ github.event.inputs.default_theme }}
   DEFAULT_HOSTNAME: ${{ github.event.inputs.build_version == 'Muffinbit/openwrt' && 'OpenWrt' || 'ImmortalWrt' }}
   SSH: ${{ format('{0}', github.event.inputs.ssh) }}
   UPLOAD_BIN_DIR: false
@@ -362,7 +362,7 @@ jobs:
           - 🏗️Device Arch: ${TARGET_ARCH}
           - 💿System Version: ${SYSTEM_VERSION}
           - ⚙️Kernel Version: ${KERNEL_VERSION}
-          - 🎨Default Theme: ${DEFAULT_THEME}
+#          - 🎨Default Theme: ${DEFAULT_THEME}
 
           #### 📦Plugins
           \`\`\`
