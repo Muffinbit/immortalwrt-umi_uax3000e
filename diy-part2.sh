@@ -33,19 +33,6 @@ else
     exit 1
 fi
 
-# Modify hostname
-#sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
-echo "ℹ️ Default host name: $DEFAULT_HOSTNAME"
-echo "ℹ️ Input host name: $HOSTNAME"
-sed -i "s|$DEFAULT_HOSTNAME|$HOSTNAME|g" "$CONFIG_THEME_FILE"
-
-if grep -q "$HOSTNAME" "$DEFAULT_HOSTNAME"; then
-    echo "✅ Replacement successful"
-else
-    echo "❌ Replacement failed! $HOSTNAME not found in $DEFAULT_HOSTNAME"
-    exit 1
-fi
-
 # update_name(){  
 #     local old_name=$1  
 #     local new_name=$2  
