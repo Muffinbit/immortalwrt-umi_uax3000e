@@ -61,6 +61,8 @@ fi
 # update_name "带宽监控" "监控"
 
 # fix golang error
+GOLANG_REPO="https://github.com/sbwml/packages_lang_golang"
+GOLANG_BRANCH="25.x"
 update_golang() {
     if [[ -d ./feeds/packages/lang/golang ]]; then
         echo "正在更新 golang 软件包..."
