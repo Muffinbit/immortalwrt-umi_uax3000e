@@ -60,4 +60,16 @@ fi
 # #update_name "管理权" "账号管理"
 # update_name "带宽监控" "监控"
 
+# fix golang error
+update_golang() {
+    if [[ -d ./feeds/packages/lang/golang ]]; then
+        echo "正在更新 golang 软件包..."
+        \rm -rf ./feeds/packages/lang/golang
+        if ! git clone --depth 1 -b $GOLANG_BRANCH $GOLANG_REPO ./feeds/packages/lang/golang; then
+            echo "错误：克隆 golang 仓库 $GOLANG_REPO 失败" >&2
+            exit 1
+        fi
+    fi
+}
+
 echo "✅ diy-part2.sh execution completed"
